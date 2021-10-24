@@ -1,11 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Homepage</title>
+  </head>
+  <style>
+    body {
+      background-color: rgb(191, 191, 191);
+    }
 
-<body>
-    <h1>This is the homepage</h1>
-</body>
+    h1,
+    h2,
+    h3,
+    p {
+      margin-bottom: 1rem;
+    }
+
+    a,
+    a:visited {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(90%, 800px);
+      font-family: Helvetica, Arial, sans-serif;
+      margin: 0 auto;
+    }
+
+    .homepage,
+    .self-link {
+      margin: 6rem 0;
+      text-align: center;
+    }
+
+    .a-link {
+      color: rgb(56, 131, 251);
+    }
+
+    .a-link:hover {
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+
+    .link-btn {
+      border-radius: 0.3rem;
+      border: none;
+      background-color: rgb(56, 131, 251);
+      color: white;
+      padding: 10px 25px;
+      margin: 2rem auto;
+      display: inline-block;
+    }
+
+    .link-btn:hover {
+      background-color: rgb(45, 107, 207);
+    }
+  </style>
+
+  <body>
+    <section class="container">
+      <div class="homepage">
+        <h1>Jobylon Chat API</h1>
+        <p>This is the homepage</p>
+        <p>
+          To read the documentation and instructions of the API visit this
+          <a
+            href="https://github.com/BeGeos/jobylon-chat-api"
+            class="a-link"
+            target="_blank"
+            >link</a
+          >
+          on GitHub or follow the link below
+        </p>
+        <a href="/api" class="link-btn">Documentation</a>
+      </div>
+
+      <div class="self-link">
+        Brougth to you by
+        <a href="https://github.com/BeGeos" class="a-link" target="_blank"
+          >@BeGeos</a
+        >
+      </div>
+    </section>
+  </body>
 </html>

@@ -1,11 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Jobylon-Chat-API Documentation</title>
-</head>
-<body>
+  </head>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
 
-    <h1>Hello there</h1>
-</body>
+    body,
+    html {
+      background-color: rgb(191, 191, 191);
+      min-height: 100%;
+      font-size: 16px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-bottom: 1rem;
+    }
+
+    code {
+      font-size: 1rem;
+    }
+
+    .headline {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .container {
+      width: min(90%, 800px);
+      font-family: Helvetica, Arial, sans-serif;
+      margin: 2rem auto;
+      line-height: 1.6;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    .danger {
+      color: rgb(255, 68, 68);
+    }
+
+    .a-link {
+      color: rgb(56, 131, 251);
+    }
+
+    .a-link:hover {
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+
+    .section {
+      margin-top: 3rem;
+      border: none;
+      border-radius: 0.3rem;
+      background-color: white;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .error-list,
+    .parameter-list {
+      padding-left: 30px;
+    }
+
+    .error-list li,
+    .parameter-list li {
+      list-style: disc;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <h1 class="headline">API Documentation</h1>
+      <div class="text">
+        <div class="title">
+          <h2>Main Routes</h2>
+          <ul>
+            <h4>Users:</h4>
+            <li>
+              <a href="#users" class="a-link"><code>/api/users</code></a>
+            </li>
+            <li>
+              <a href="#users" class="a-link"
+                ><code>/api/users/:user_id</code></a
+              >
+            </li>
+            <h4>Chat:</h4>
+            <li>
+              <a href="#chat" class="a-link"><code>/api/chat</code></a>
+            </li>
+            <li>
+              <a href="#chat" class="a-link"><code>/api/chat/:chat_id</code></a>
+            </li>
+          </ul>
+        </div>
+        <div class="users section" id="users">
+          <h2>
+            <code>/api/users</code> <br />
+            <code>/api/users/:user_id</code>
+          </h2>
+          <p>
+            This route accepts 2 methods: <br /><strong>GET</strong> and
+            <strong>POST</strong>
+          </p>
+          <p>
+            A GET request to <code>/api/users</code> will return all the users
+            (admin, and superusers excluded)
+          </p>
+          <p>
+            If a parameter is passed in <code>:user_id</code> it will return
+            only the user with that id
+          </p>
+          <p>
+            If successful both these operations will return a status code of
+            200/OK
+          </p>
+          <hr />
+          <p>
+            A POST request to <code>/api/users</code> will create a new user in
+            the database. There is only one parameter required in the body =>
+            username.
+          </p>
+          <p>
+            Since authentication is not enforced there is no need for a
+            password. Every other parameter in the request will be ignored.
+            <br />
+            A successful response will carry a 201/CREATED code.
+          </p>
+          <p>
+            To save yourself some time you can pass in the URL a populate
+            parameter, specifying the size as integer number. If the number is
+            greater than 100, 100 will be used.
+          </p>
+          <p>
+            This will trigger a populate command in the database of random users
+            (from the
+            <a
+              href="https://random-data-api.com/"
+              class="a-link"
+              target="_blank"
+              >Random Data API</a
+            >) in number = to the parameter passed in. <br />
+            <small class="danger"
+              >WARNING: every populate action will delete all the previous users
+              (admin excluded) and create a new set of users</small
+            >
+          </p>
+          <p>
+            An example is <strong>POST </strong
+            ><code>/api/users?populate=20</code><br />
+            will return a 201/CREATED code, if successful and a
+            <code>"20 users created"</code> message.
+          </p>
+          <hr />
+          <h3>Errors</h3>
+          <p>
+            Error will carry a status code and an object with a message. Cases
+            for errors are:
+          </p>
+          <ul class="error-list">
+            <li>Username already exists: 400 - Bad Request</li>
+            <li>Username is not in the POST request body: 400 Bad Request</li>
+            <li>Populate is not an integer: 422 Unprocessable Entity</li>
+            <li>
+              User with <code>user_id</code> does not exist: 404 User not Found
+            </li>
+            <li>Internal Errors: 500 and a message</li>
+          </ul>
+        </div>
+
+        <div class="chat section" id="chat">
+          <h2>
+            <code>/api/chat</code> <br />
+            <code>/api/chat/:chat_id</code>
+          </h2>
+          <p>
+            This route accepts 2 methods: <br /><strong>GET</strong> and
+            <strong>POST</strong>
+          </p>
+          <p>
+            A GET request to <code>/api/chat</code> will return an error.
+            <br />To work this method needs to make a request with a
+            <code>:chat_id</code> and also a <code>user</code> query parameter.
+            <br />
+            e.g <code>GET /api/chat/:chat_id?user={username}</code>
+          </p>
+          <p>
+            This ensures that you know the UUID of the chat and that the user
+            belongs to the conversation. <br />
+            A user cannot read messages of a chat they are not part of.
+          </p>
+          <p>
+            A successful response will return a 200/OK code and a JSON object
+            with:
+          </p>
+          <ul class="parameter-list">
+            <li><code>id</code> --> id of the chat</li>
+            <li>
+              <code>timestamp</code> --> the date of creation of this chat
+            </li>
+            <li>
+              <code>members</code> --> a list with 2 members of the conversation
+            </li>
+            <li><code>messages</code> --> a list of objects with message</li>
+          </ul>
+          <br />
+          <p>
+            Each message has an <code>author</code> a <code>content</code> and a
+            <code>timestamp</code>
+          </p>
+          <hr />
+          <p>
+            POST request need to be sent to the <code>/api/chat</code> URL.
+            There are 3 required parameter that need to be sent in the body:
+          </p>
+          <ul class="parameter-list">
+            <li>
+              <code>sender</code> --> Username of the user sending the message
+            </li>
+            <li>
+              <code>receiver</code> --> Username of the user receiving the
+              message
+            </li>
+            <li><code>content</code> --> The content of the message</li>
+          </ul>
+          <br />
+          <p>
+            The logic behind will take care of fetching the correct chat, and if
+            the chat already exists, based on the 2 unique members, it will use
+            that same chat. Otherwise, it will create a new one, if one does not
+            exist.
+          </p>
+          <p>
+            This is URL will "send" a message to the receiver, adding a message
+            to the chat itself. For the receiver to see the message, or messages
+            on the chat, they need to make a GET request using
+            <code>/api/chat/:chat_id?user=username</code>
+          </p>
+          <p>
+            Chat IDs are UUIDs made of 32 hexadecimal characters to add
+            security. In fact, to fetch a chat one needs to know precisely the
+            chat id. Every time a message is successfully sent a 201/CREATED
+            code and a JSON object will be returned. In the JSON there will be a
+            complete snapshot of the chat, chat id included.
+          </p>
+          <hr />
+          <h3>Errors</h3>
+          <p>
+            A list of possible errors. They will return with a status code and a
+            message:
+          </p>
+          <ul class="error-list">
+            <li>if the <code>:chat_id</code> doesn't exist: 404 Not Found</li>
+            <li>
+              If the user is not provided, OR the user doesn't belong to the
+              members of the chat: 401 Unauthorised
+            </li>
+            <li>If the sender and receiver are the same: 400 Bad Request</li>
+            <li>If the receiver doesn't exist: 400 Bad Request</li>
+            <li>Generic Internal Errors: 500 status code and a message</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
