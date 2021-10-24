@@ -219,7 +219,7 @@
           </p>
           <hr />
           <p>
-            POST request need to be sent to the <code>/api/chat</code> URL.
+            POST requests need to be sent to the <code>/api/chat</code> URL.
             There are 3 required parameter that need to be sent in the body:
           </p>
           <ul class="parameter-list">
@@ -243,7 +243,7 @@
             This is URL will "send" a message to the receiver, adding a message
             to the chat itself. For the receiver to see the message, or messages
             on the chat, they need to make a GET request using
-            <code>/api/chat/:chat_id?user=username</code>
+            <code>/api/chat/:chat_id?user={username}</code>
           </p>
           <p>
             Chat IDs are UUIDs made of 32 hexadecimal characters to add
