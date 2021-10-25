@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nzc-_tl4*=455e)-49tphl34+rjnoe&6le81my=3ywa0fgd(xp'
+# SECRET_KEY = 'django-insecure-nzc-_tl4*=455e)-49tphl34+rjnoe&6le81my=3ywa0fgd(xp'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [".localhost", "127.0.0.1", "[::1]"] if not DEBUG else []
+ALLOWED_HOSTS = ["ad79a0d4112430cb.herokuapp.com",
+                 ".localhost",
+                 "127.0.0.1",
+                 "[::1]"] if not DEBUG else []
 
 
 # Application definition
@@ -116,10 +121,7 @@ CORS_ALLOW_ALL_ORIGINS = True if DEBUG else False
 CORS_ALLOW_CREDENTIALS = True if DEBUG else False
 
 # Add Whitelist website for cross-site requests
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000"
-] if not DEBUG else ""
+CORS_ALLOWED_ORIGINS = ["*"] if not DEBUG else ""
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -139,9 +141,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

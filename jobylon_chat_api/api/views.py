@@ -60,7 +60,7 @@ class UserView(APIView):
                 size = request.GET.get("populate") if int(request.GET.get("populate")) <= 100 else 100
                 data = requests.get(RANDOM_USER_API_URL, params={"size": size})
 
-                # Wipe out every user in DB, chat and messages will be not be deleted
+                # Wipe out every user in DB, chat and messages will not be deleted
                 # But they will be inaccessible from any user --> it makes sense no user no chat no messages
                 User.objects.filter(is_superuser=False).delete()
                 for user in data.json():
